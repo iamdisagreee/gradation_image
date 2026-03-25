@@ -143,8 +143,8 @@ class ImageProcessorApp:
 
         elif "логарифмическое" in selection:
             self._create_param_entry("Масштабирующий коэффициент (c):", "28.0", 0, key="c")
-            self._create_param_entry("Смещение (для log(1+r)):", "1", 1, key="offset")
-            info = "Формула: s = c * log(смещение + r). Рекомендуется c = 255/log(1+255) ≈ 28.0"
+            self._create_param_entry("Смещение (offset):", "1", 1, key="offset")
+            info = "Формула: s = c * log(offset + r)"
 
         elif "степенное" in selection:
             self._create_param_entry("Гамма (γ):", "1.5", 0, key="gamma")
@@ -239,14 +239,12 @@ class ImageProcessorApp:
             elif "логарифмическое" in selection:
                 c = float(self.param_entries["c"].get())
                 offset = float(self.param_entries["offset"].get())
-                gray = self.to_grayscale(img_np, 0.299, 0.587, 0.114)
-                img_np = self.to_logarithmic(gray, c, offset)
+                img_np = self.to_logarithmic(img_np, c, offset)
 
             elif "степенное" in selection:
                 gamma = float(self.param_entries["gamma"].get())
                 c = float(self.param_entries["c"].get())
-                gray = self.to_grayscale(img_np, 0.299, 0.587, 0.114)
-                img_np = self.to_power_law(gray, gamma, c)
+                img_np = self.to_power_law(img_np, gamma, c)
 
             if len(img_np.shape) == 2:
                 result_pil = Image.fromarray(img_np.astype(np.uint8), mode='L')
