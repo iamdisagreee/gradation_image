@@ -1,6 +1,6 @@
 venv
-files
-.idea
+files/
+.idea/
 zrenie_kharitonov.odt
 zrenie_kharitonov.pdf
 zrenie_kharitonov.pptx
